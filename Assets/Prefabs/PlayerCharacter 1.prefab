@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 758903126632780685}
   - component: {fileID: 1888373721073874029}
   - component: {fileID: 2655823166875444020}
+  - component: {fileID: 5884598913016909453}
   m_Layer: 17
   m_Name: PlayerCharacter 1
   m_TagString: Player
@@ -153,7 +154,7 @@ MonoBehaviour:
       m_Action: Right
       m_Flags: 0
     m_Flags: 0
-  rb2d: {fileID: 0}
+  rb2dPlayer: {fileID: 0}
   ShootAction:
     m_Name: Shoot
     m_Type: 0
@@ -173,14 +174,14 @@ MonoBehaviour:
     m_Flags: 0
   isGrounded: 0
   facingLeft: 0
-  isTakingDamage: 0
   invulnerable: 0
-  bulletPrefab: {fileID: 7233977153412676113, guid: 53fd0e8021d34ff43b8ff0cc85229b13, type: 3}
-  BulletShootpos: {fileID: 432667977646403149}
-  bulletDamage: 1
-  bulletSpeed: 10
   currentHealth: 0
   maxHealth: 15
+  isTakingDamage: 0
+  weapon1: 0
+  weapon2: 0
+  BulletShootpos: {fileID: 432667977646403149}
+  BulletPrefab: {fileID: 7233977153412676113, guid: 53fd0e8021d34ff43b8ff0cc85229b13, type: 3}
 --- !u!61 &1888373721073874029
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -254,6 +255,24 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &5884598913016909453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5986420144278438265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85a542058e5e00543bb26379caf1db9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BulletShootpos: {fileID: 432667977646403149}
+  BulletPrefab: {fileID: 7233977153412676113, guid: 53fd0e8021d34ff43b8ff0cc85229b13, type: 3}
+  rb2dBullet: {fileID: 0}
+  player: {fileID: 0}
+  weapon1: 0
+  weapon2: 0
 --- !u!1 &7907315613350919121
 GameObject:
   m_ObjectHideFlags: 0

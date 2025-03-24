@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 6734485792296451624}
   - component: {fileID: 3186260572429298474}
   - component: {fileID: 2154762672052101969}
-  - component: {fileID: 5238302163954065495}
+  - component: {fileID: 3112895477254454381}
+  - component: {fileID: 8327968657866208173}
   m_Layer: 17
   m_Name: bullet
   m_TagString: Projectile
@@ -153,7 +154,7 @@ Rigidbody2D:
   m_SleepingMode: 0
   m_CollisionDetection: 1
   m_Constraints: 6
---- !u!114 &5238302163954065495
+--- !u!114 &3112895477254454381
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -162,13 +163,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 7233977153412676113}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 295aab86f685ce947b29d14beeab026b, type: 3}
+  m_Script: {fileID: 11500000, guid: 7d79e8802d3400c4b8d2b319faa4df7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bulletDamage: 0
+  pistol: {fileID: 0}
+  player: {fileID: 0}
   rb2d: {fileID: 0}
-  damage: 1
-  bulletSpeed: 5
-  bulletDirection: {x: 1, y: 0}
-  destroyDelay: 2
-  bulletPrefab: {fileID: 7233977153412676113}
+--- !u!114 &8327968657866208173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7233977153412676113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85a542058e5e00543bb26379caf1db9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   BulletShootpos: {fileID: 0}
+  BulletPrefab: {fileID: 0}
+  rb2dBullet: {fileID: 0}

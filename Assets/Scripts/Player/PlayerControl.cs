@@ -3,27 +3,25 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
-using static UnityEditor.Searcher.SearcherWindow.Alignment;
 using static UnityEngine.EventSystems.EventTrigger;
 public class PlayerControl : MonoBehaviour
 {
     public InputAction LeftAction;
     public InputAction RightAction;
-    public Rigidbody2D rb2d;
+    public Rigidbody2D rb2dPlayer;
     public InputAction ShootAction;
     public bool isGrounded;
     public bool facingLeft;
     public bool invulnerable;
 
-    public GameObject bulletPrefab;
-    public Transform BulletShootpos;
-    public int bulletDamage = 1;
-    public float bulletSpeed = 10f;
-
     public int currentHealth;
     public int maxHealth = 15;
     public bool isTakingDamage = false;
     float lastHit = 0f;
+    public bool weapon1;
+    public bool weapon2 = false;
+    public Transform BulletShootpos;
+    public GameObject BulletPrefab;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -31,7 +29,8 @@ public class PlayerControl : MonoBehaviour
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 60;
 
-        rb2d = GetComponent<Rigidbody2D>();
+        
+        rb2dPlayer = GetComponent<Rigidbody2D>();
         facingLeft = true;
 
         LeftAction.Enable();
@@ -39,6 +38,8 @@ public class PlayerControl : MonoBehaviour
         ShootAction.Enable();
 
         currentHealth = maxHealth;
+        weapon1 = true;
+        weapon2 = false;
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -62,7 +63,7 @@ public class PlayerControl : MonoBehaviour
                 lastHit = 0f;
             }
         }
-        Debug.Log(currentHealth);
+        //Debug.Log(currentHealth);
     }
     void Run()
     {
@@ -71,13 +72,13 @@ public class PlayerControl : MonoBehaviour
         if (LeftAction.IsPressed())
         {
             horizontal = -1f; //move left
-            rb2d.transform.rotation = Quaternion.Euler(0, 180, 0);
+            rb2dPlayer.transform.rotation = Quaternion.Euler(0, 180, 0);
             facingLeft = false;
         }
         else if (RightAction.IsPressed())
         {
             horizontal = 1f; //move right
-            rb2d.transform.rotation = Quaternion.Euler(0, 0, 0);
+            rb2dPlayer.transform.rotation = Quaternion.Euler(0, 0, 0);
             facingLeft = true;
         }
         position.x = position.x + (0.1f * horizontal); //change position to horizontal * 0.1
@@ -89,46 +90,48 @@ public class PlayerControl : MonoBehaviour
         float jumpSpeed = 350f;
         if (Input.GetKeyDown(KeyCode.W) && isGrounded) //checks if w key was pressed down and if ground collision is true then fires once
         {
-            rb2d.AddForce(Vector2.up * jumpSpeed); //adds velocity to y and causes player character to jump
+            rb2dPlayer.AddForce(Vector2.up * jumpSpeed); //adds velocity to y and causes player character to jump
             isGrounded = false; //sets boolean value for ground collision to false
         }
 
     }
-    void PlayerShootInput()
+    public void PlayerShootInput()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E)) //if fire key is pressed checks which weapon is currently enabled
         {
-            playerShoot();
+            CheckWeapon();
         }
     }
-    void playerShoot() 
+    void CheckWeapon() //uses weapon booleans to call appropriate shoot function
     {
-        GameObject bullet = Instantiate(bulletPrefab, BulletShootpos.transform.position, Quaternion.identity); //creates bullet prefab at bulletshootpos gizmo on playercharacter
-        bullet.name = bulletPrefab.name; //changes the name of the created prefab
-        bullet.GetComponent<BulletScript>().SetBulletDamage(bulletDamage); //sets damage from this script
-        bullet.GetComponent<BulletScript>().SetBulletSpeed(bulletSpeed); //sets speed from this script
-        bullet.GetComponent<BulletScript>().SetBulletDirection((facingLeft) ? Vector2.left : Vector2.right); //shoots left or right depending on the way the player is facing
-        bullet.GetComponent<BulletScript>().Shoot();
-    }
+        if (weapon1)
+        {
+            GetComponent<PistolScript>().Shoot(facingLeft);
+        }
+        else if(weapon2)
+        {
 
-    public void PlayerTakeDamage(int damage)
+        }
+    }
+    public void PlayerTakeDamage(int damage) //calls whenever the player should take damage and decrements health
     {
         
-        if (!invulnerable)
+        if (!invulnerable) //if player isn't invulnerable code continues
         {
             currentHealth -= damage;
             isTakingDamage = true;
             invulnerable = true;
-            Mathf.Clamp(currentHealth, 0, maxHealth); //current health can never go below 0 or above max
+            currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth); //current health can never go below 0 or above max
             if (currentHealth <= 0)
             {
-                killPlayer();
+                KillPlayer(); //if health reaches 0 destroys player object
             }
             
         }
     }
-    public void killPlayer()
+    public void KillPlayer()
     {
+
         Destroy(gameObject);
     }
 }

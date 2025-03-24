@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7386401589173604559}
   - component: {fileID: 440172398330876433}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Hitbox
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -267,6 +267,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3467cc5a82c2fe4db8613e9dab07bfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentHealth: 0
-  maxHealth: 1
-  contactDamage: 1
+  onScreen: 0

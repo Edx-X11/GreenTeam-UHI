@@ -1,16 +1,34 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    public int currentHealth;
-    public int maxHealth = 1;
-    public int contactDamage = 1;
+    int currentHealth = 0;
+    int maxHealth;
+    int contactDamage;
     bool invulnerable = false;
+    public bool onScreen = false;
+    public int points;
 
+    public GameManager manager;
+
+    public void SetContactDamage(int contact)
+    {
+        this.contactDamage = contact;
+    }
+    public void SetMaxHealth(int Health)
+    {
+        this.maxHealth = Health;
+        currentHealth = maxHealth;
+    }
+    public void SetPoints(int score)
+    {
+        this.points = score;
+    }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        currentHealth = maxHealth;
+        manager = GetComponent<GameManager>();
     }
 
     // Update is called once per frame
@@ -19,19 +37,28 @@ public class EnemyController : MonoBehaviour
         
     }
 
+    void OnBecameVisible() //functions to determine if the enemy is on screen or not
+    {
+        onScreen = true;
+    }
+    private void OnBecameInvisible()
+    {
+        onScreen = false;
+    }
     public void TakeDamage(int damage)
     {
         if (!invulnerable)
         {
             currentHealth -= damage;
-            Mathf.Clamp(currentHealth, 0, maxHealth); //current health can never go below 0 or above max
+            currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth); //current health can never go below 0 or above max
             if (currentHealth <= 0) //if the enemy's health reaches 0 it gets destroyed
             {
-                killEnemy();
+                GameManager.Instance.AddScore(points);
+                KillEnemy();
             }
         }
     }
-    public void killEnemy()
+    public void KillEnemy()
     {
         Destroy(gameObject);
     }
