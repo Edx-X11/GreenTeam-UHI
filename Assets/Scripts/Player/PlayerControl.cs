@@ -52,6 +52,8 @@ public class PlayerControl : MonoBehaviour
         Run();
         Jump();
         PlayerShootInput();
+
+        
         
         if (isTakingDamage) //checks when last hit to determine if player can be hit again based off damage cooldown
         {

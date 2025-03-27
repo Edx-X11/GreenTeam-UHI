@@ -14,7 +14,7 @@ public class PistolScript : MonoBehaviour, IShoot //Inherits from the interface 
     public bool weapon2 = false;
     void Start()
     {
-        gun = new Weapon(1, 10, 0.5f, false, 0f); //sets parameters of pistol
+        gun = new Weapon(1, 17, 0.5f, false, 0f); //sets parameters of pistol
     }
     
     private void Update()
