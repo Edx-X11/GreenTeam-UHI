@@ -7,7 +7,7 @@ public class MantisController : MonoBehaviour
     public GameObject Player;
     private float moveSpeed = 0.8f;
     private int contactDamage = 3;
-    private int maxHealth = 5;
+    private int maxHealth = 3;
     private int points = 750;
 
     public BoxCollider2D hitbox;

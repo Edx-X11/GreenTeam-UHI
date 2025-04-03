@@ -133,7 +133,7 @@ public class PlayerControl : MonoBehaviour
     }
     public void KillPlayer()
     {
-
+        GameManager.Instance.PlayerDied();
         Destroy(gameObject);
     }
 }

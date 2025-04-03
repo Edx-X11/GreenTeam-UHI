@@ -109,4 +109,11 @@ public class GameManager : MonoBehaviour
     {
         playerScore += points;
     }
+
+    public void PlayerDied()
+    {
+        isGameOver = true;
+        gameRestartTime = gameRestartDelay;
+
+    }
 }
