@@ -10,6 +10,7 @@ public class PlayerControl : MonoBehaviour
     public InputAction RightAction;
     public Rigidbody2D rb2dPlayer;
     public InputAction ShootAction;
+    public InputAction JumpAction;
     public bool isGrounded;
     public bool facingLeft;
     public bool invulnerable;
@@ -18,6 +19,7 @@ public class PlayerControl : MonoBehaviour
     public int maxHealth = 15;
     public bool isTakingDamage = false;
     float lastHit = 0f;
+    float invulnPeriod = 0.5f;
     public bool weapon1;
     public bool weapon2 = false;
     public Transform BulletShootpos;
@@ -36,6 +38,8 @@ public class PlayerControl : MonoBehaviour
         LeftAction.Enable();
         RightAction.Enable();
         ShootAction.Enable();
+        JumpAction.Enable();
+        
 
         currentHealth = maxHealth;
         weapon1 = true;
@@ -57,14 +61,33 @@ public class PlayerControl : MonoBehaviour
         
         if (isTakingDamage) //checks when last hit to determine if player can be hit again based off damage cooldown
         {
+            RightAction.Disable();
+            JumpAction.Disable();
+            LeftAction.Disable();
+            ShootAction.Disable();
+
             float damageCooldown = 1.5f;
             lastHit += Time.deltaTime;
+            if(invulnPeriod > 0)
+            {
+                Vector2 position = transform.position;
+                position.x -= 0.1f;
+                transform.position = position;
+            }
             if (lastHit > damageCooldown)
             {
+                RightAction.Enable();
+                LeftAction.Enable();
+                ShootAction.Enable();
+                JumpAction.Enable();
                 invulnerable = false;
                 lastHit = 0f;
+                invulnPeriod = 0.5f;
+                isTakingDamage = false;
             }
         }
+
+        
         //Debug.Log(currentHealth);
     }
     void Run()
@@ -90,7 +113,7 @@ public class PlayerControl : MonoBehaviour
     void Jump()
     {
         float jumpSpeed = 350f;
-        if (Input.GetKeyDown(KeyCode.W) && isGrounded) //checks if w key was pressed down and if ground collision is true then fires once
+        if (JumpAction.IsPressed() && isGrounded) //checks if w key was pressed down and if ground collision is true then fires once
         {
             rb2dPlayer.AddForce(Vector2.up * jumpSpeed); //adds velocity to y and causes player character to jump
             isGrounded = false; //sets boolean value for ground collision to false
@@ -128,7 +151,6 @@ public class PlayerControl : MonoBehaviour
             {
                 KillPlayer(); //if health reaches 0 destroys player object
             }
-            
         }
     }
     public void KillPlayer()

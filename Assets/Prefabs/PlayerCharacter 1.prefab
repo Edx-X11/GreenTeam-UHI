@@ -172,6 +172,31 @@ MonoBehaviour:
       m_Action: Shoot
       m_Flags: 0
     m_Flags: 0
+  JumpAction:
+    m_Name: Jump
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 4a05b91d-d0cb-45a4-8270-1833632174ff
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 1361d307-ae68-417e-a6b6-ea3219536b91
+      m_Path: <Keyboard>/w
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Jump
+      m_Flags: 0
+    - m_Name: 
+      m_Id: b66e8c97-5ae6-4678-91d8-67d1017b6feb
+      m_Path: <Keyboard>/upArrow
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Jump
+      m_Flags: 0
+    m_Flags: 0
   isGrounded: 0
   facingLeft: 0
   invulnerable: 0
@@ -216,7 +241,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.26436687, y: -0.1364547}
+  m_Offset: {x: -0.15058541, y: -0.0605523}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -226,7 +251,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.29609013, y: 1.6770906}
+  m_Size: {x: 0.52365077, y: 1.8288954}
   m_EdgeRadius: 0
 --- !u!50 &2655823166875444020
 Rigidbody2D:
