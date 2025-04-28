@@ -106,13 +106,13 @@ public class PlayerControl : MonoBehaviour
             rb2dPlayer.transform.rotation = Quaternion.Euler(0, 0, 0);
             facingLeft = true;
         }
-        position.x = position.x + (0.1f * horizontal); //change position to horizontal * 0.1
+        position.x = position.x + (0.13f * horizontal); //change position to horizontal * 0.1
         transform.position = position; //set position of asset to new position value
     }
 
     void Jump()
     {
-        float jumpSpeed = 350f;
+        float jumpSpeed = 400f;
         if (JumpAction.IsPressed() && isGrounded) //checks if w key was pressed down and if ground collision is true then fires once
         {
             rb2dPlayer.AddForce(Vector2.up * jumpSpeed); //adds velocity to y and causes player character to jump
