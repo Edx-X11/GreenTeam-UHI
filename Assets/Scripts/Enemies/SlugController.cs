@@ -17,6 +17,7 @@ public class SlugController : MonoBehaviour
     int direction;
     int yRotation;
     bool isGrounded;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -34,6 +35,10 @@ public class SlugController : MonoBehaviour
         {
             isGrounded = true;
         }
+    }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        isGrounded = false;
     }
     // Update is called once per frame
     void Update()
@@ -65,6 +70,10 @@ public class SlugController : MonoBehaviour
             {
                 rb2d.transform.rotation = Quaternion.Euler(180, yRotation, 0); //rotates the sprite towards the ground
             }
+        }
+        if(!isGrounded)
+        {
+            rb2d.gravityScale = 1;
         }
     }
 }

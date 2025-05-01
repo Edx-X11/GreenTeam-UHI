@@ -12,6 +12,8 @@ public class PlayerControl : MonoBehaviour
     public InputAction ShootAction;
     public InputAction JumpAction;
     public bool isGrounded;
+    public bool canJump;
+    float jumpDelay = 0.3f;
     public bool facingLeft;
     public bool invulnerable;
 
@@ -45,10 +47,13 @@ public class PlayerControl : MonoBehaviour
         weapon1 = true;
         weapon2 = false;
     }
-
+    
     void OnCollisionEnter2D(Collision2D collision)
     {
-        isGrounded = true; //checks for collision with another object for all purposes here, checks for ground collision
+        if (collision.gameObject.CompareTag("Platform"))
+        {
+            isGrounded = true; //checks for collision with another object for all purposes here, checks for ground collision
+        }
     }
     // Update is called once per frame
     void Update()
@@ -57,8 +62,6 @@ public class PlayerControl : MonoBehaviour
         Jump();
         PlayerShootInput();
 
-        
-        
         if (isTakingDamage) //checks when last hit to determine if player can be hit again based off damage cooldown
         {
             RightAction.Disable();
@@ -86,7 +89,15 @@ public class PlayerControl : MonoBehaviour
                 isTakingDamage = false;
             }
         }
-
+        if(isGrounded && !canJump)
+        {
+            jumpDelay -= Time.deltaTime;
+            if (jumpDelay < 0)
+            {
+                canJump = true;
+                jumpDelay = 0.3f;
+            }
+        }
         
         //Debug.Log(currentHealth);
     }
@@ -113,16 +124,17 @@ public class PlayerControl : MonoBehaviour
     void Jump()
     {
         float jumpSpeed = 400f;
-        if (JumpAction.IsPressed() && isGrounded) //checks if w key was pressed down and if ground collision is true then fires once
+        if (JumpAction.IsPressed() && isGrounded && canJump) //checks if w key was pressed down and if ground collision is true then fires once
         {
             rb2dPlayer.AddForce(Vector2.up * jumpSpeed); //adds velocity to y and causes player character to jump
             isGrounded = false; //sets boolean value for ground collision to false
+            canJump = false;
         }
 
     }
     public void PlayerShootInput()
     {
-        if (Input.GetKeyDown(KeyCode.E)) //if fire key is pressed checks which weapon is currently enabled
+        if (Input.GetKeyDown(KeyCode.E) && ShootAction.enabled) //if fire key is pressed checks which weapon is currently enabled
         {
             CheckWeapon();
         }
