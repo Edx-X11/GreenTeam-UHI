@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -16,12 +17,13 @@ public class PlayerControl : MonoBehaviour
     float jumpDelay = 0.3f;
     public bool facingLeft;
     public bool invulnerable;
+    float actionableCooldown = 1.5f;
+    float invulnPeriod = 4f;
 
     public int currentHealth;
     public int maxHealth = 15;
     public bool isTakingDamage = false;
-    float lastHit = 0f;
-    float invulnPeriod = 0.5f;
+    public bool tookDamage = false;
     public bool weapon1;
     public bool weapon2 = false;
     public Transform BulletShootpos;
@@ -47,7 +49,7 @@ public class PlayerControl : MonoBehaviour
         weapon1 = true;
         weapon2 = false;
     }
-    
+
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Platform"))
@@ -58,37 +60,31 @@ public class PlayerControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(invulnPeriod);
+
         Run();
         Jump();
         PlayerShootInput();
-
-        if (isTakingDamage) //checks when last hit to determine if player can be hit again based off damage cooldown
+        if(tookDamage)
         {
-            RightAction.Disable();
-            JumpAction.Disable();
-            LeftAction.Disable();
-            ShootAction.Disable();
-
-            float damageCooldown = 1.5f;
-            lastHit += Time.deltaTime;
-            if(invulnPeriod > 0)
+            invulnPeriod -= Time.deltaTime;
+            actionableCooldown -= Time.deltaTime;
+            if(invulnPeriod < 0)
             {
-                Vector2 position = transform.position;
-                position.x -= 0.1f;
-                transform.position = position;
-            }
-            if (lastHit > damageCooldown)
-            {
-                RightAction.Enable();
-                LeftAction.Enable();
-                ShootAction.Enable();
-                JumpAction.Enable();
                 invulnerable = false;
-                lastHit = 0f;
-                invulnPeriod = 0.5f;
-                isTakingDamage = false;
+                invulnPeriod = 4f;
+                tookDamage = false;
+            }
+            if (actionableCooldown < 0)
+            {
+                LeftAction.Enable();
+                RightAction.Enable();
+                JumpAction.Enable();
+                ShootAction.Enable();
+                actionableCooldown = 1.5f;
             }
         }
+
         if(isGrounded && !canJump)
         {
             jumpDelay -= Time.deltaTime;
@@ -98,13 +94,11 @@ public class PlayerControl : MonoBehaviour
                 jumpDelay = 0.3f;
             }
         }
-        
-        //Debug.Log(currentHealth);
     }
     void Run()
     {
-        Vector2 position = transform.position; //stores player asset position in a vector variable
         float horizontal = 0.0f;
+        Vector2 position = transform.position; //stores player asset position in a vector variable
         if (LeftAction.IsPressed())
         {
             horizontal = -1f; //move left
@@ -156,8 +150,13 @@ public class PlayerControl : MonoBehaviour
         if (!invulnerable) //if player isn't invulnerable code continues
         {
             currentHealth -= damage;
-            isTakingDamage = true;
+            LeftAction.Disable();
+            RightAction.Disable();
+            JumpAction.Disable();
+            ShootAction.Disable();
+            tookDamage = true;
             invulnerable = true;
+            isTakingDamage = true;
             currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth); //current health can never go below 0 or above max
             if (currentHealth <= 0)
             {

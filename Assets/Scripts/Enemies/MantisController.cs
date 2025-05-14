@@ -5,16 +5,17 @@ using UnityEngine.UIElements;
 public class MantisController : MonoBehaviour
 {
     public GameObject Player;
-    private float moveSpeed = 0.8f;
-    private int contactDamage = 3;
-    private int maxHealth = 3;
-    private int points = 750;
+    public float moveSpeed = 0.8f;
+    public int contactDamage = 3;
+    public int maxHealth = 3;
+    public int points = 750;
 
     public BoxCollider2D hitbox;
     bool playerHit = false;
     float pathAway = 1.5f;
     Vector2 position;
     int direction;
+    float pathawayDelay = 0.2f;
 
     PlayerControl playerControl;
     Rigidbody2D rb2d;
@@ -45,17 +46,21 @@ public class MantisController : MonoBehaviour
             {
                 rb2d.transform.rotation = Quaternion.Euler(0, 0, 0);
             }
-
             if (playerHit) //when player gets hit paths the entity away from the player
             {
-                direction = 1;
-                position.x = position.x + ((0.1f * moveSpeed)) * direction;
-                transform.position = position;
-                pathAway -= Time.deltaTime;
-                if (pathAway < 0) //moves in one direction for 1.5 seconds
+                pathawayDelay -= Time.deltaTime;
+                if (pathawayDelay < 0)
                 {
-                    playerHit = false;
-                    pathAway = 1.5f;
+                    direction = 1;
+                    position.x = position.x + ((0.1f * moveSpeed)) * direction;
+                    transform.position = position;
+                    pathAway -= Time.deltaTime;
+                    if (pathAway < 0) //moves in one direction for 1.5 seconds
+                    {
+                        playerHit = false;
+                        pathAway = 1.5f;
+                        pathawayDelay = 0.2f;
+                    }
                 }
             }
             else //enemy moves towards the player

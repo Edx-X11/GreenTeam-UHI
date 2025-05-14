@@ -8,8 +8,8 @@ public class GrasshopperController : MonoBehaviour
     private float timer = 0.0f;
     private float waittime = 1.0f;
     private bool isGrounded;
-    private float jumpSpeed = 6.5f;
-    private float moveSpeed = 4f;
+    private float jumpSpeed = 7.3f;
+    private float moveSpeed = 4.5f;
     int contactDamage = 1;
     int maxHealth = 1;
     int points = 500;
